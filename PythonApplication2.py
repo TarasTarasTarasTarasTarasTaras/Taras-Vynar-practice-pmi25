@@ -15,7 +15,7 @@ def count_triangles(n):
 
 while True:
     try:
-        n = int(input())
+        n = int(input("Input the number of triangles: "))
         count_triangles(n)
     except ValueError:
         print(" SYNTAX ERROR (should be INT)")
