@@ -1,3 +1,5 @@
+class MyException(Exception): pass
+
 def count_triangles(n):
     result = 0
     for i in range(n):
@@ -16,8 +18,12 @@ def count_triangles(n):
 while True:
     try:
         n = int(input("Input the number of triangles: "))
+        if (n<=0): raise MyException 
         count_triangles(n)
     except ValueError:
         print(" SYNTAX ERROR (should be INT)")
+        continue
+    except MyException:
+        print(" ERROR: n should be '>' 0")
         continue
     break
