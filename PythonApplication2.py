@@ -5,26 +5,24 @@ def input_array(arr, n):
     for i in range(n):
         arr[i] = int(input())
         
+
 def input_random_from_A_to_B(arr, n):
     A = int(input(" Input A: "))
     B = int(input(" Input B: "))
     for i in range(n):
         arr[i] = random.randint(A,B)
 
+
 def print_array(arr):
     for i in range(len(arr)):
         print(arr[i], end=' ')
 
-def Merge(array, begin, end):
-    global recursive_counter
-    global comparative_counter
-    global assignment_counter
-    global incremental_counter
 
+def Merge(array, begin, end, statistic_):
     mid = begin + (end - begin) // 2
     i = begin; j = mid + 1; temp_arr = []; 
 
-    comparative_counter += 2      # 2 порівняння
+    statistic_[3] += 2            # 2 порівняння
     while(i <= mid and j <= end): 
         if(array[i] <= array[j]):
             temp_arr.append(array[i])
@@ -32,43 +30,41 @@ def Merge(array, begin, end):
         else: 
             temp_arr.append(array[j])
             j+=1
-        assignment_counter += 1   # 1 присвоєння
-        comparative_counter += 3  # 3 порівняння
-        incremental_counter += 1  # 1 інкремент
+        statistic_[1] += 1        # 1 присвоєння 
+        statistic_[2] += 1        # 1 інкремент
+        statistic_[3] += 3        # 3 порівняння
 
-    comparative_counter += 1      # 1 порівняння
+    statistic_[3] += 1            # 1 порівняння
     while(i<=mid):
         temp_arr.append(array[i])
         i+=1
-        assignment_counter += 1   # 1 присвоєння
-        comparative_counter += 1  # 1 порівняння
-        incremental_counter += 1  # 1 інкремент
+        statistic_[1] += 1        # 1 присвоєння 
+        statistic_[2] += 1        # 1 інкремент
+        statistic_[3] += 1        # 1 порівняння
 
-    comparative_counter += 1      # 1 порівняння
+    statistic_[3] += 1            # 1 порівняння
     while(j<=end):
         temp_arr.append(array[j])
         j+=1
-        assignment_counter += 1   # 1 присвоєння
-        comparative_counter += 1  # 1 порівняння
-        incremental_counter += 1  # 1 інкремент
+        statistic_[1] += 1        # 1 присвоєння 
+        statistic_[2] += 1        # 1 інкремент
+        statistic_[3] += 1        # 1 порівняння
 
     for m in range(len(temp_arr)):
         array[begin+m] = temp_arr[m]
-        assignment_counter += 1   # 1 присвоєння
-        comparative_counter += 1  # 1 порівняння
-        incremental_counter += 1  # 1 інкремент
+        statistic_[1] += 1        # 1 присвоєння 
+        statistic_[2] += 1        # 1 інкремент
+        statistic_[3] += 1        # 1 порівняння
 
 
-def MergeSort(array, left, right):
-    global recursive_counter
-    global comparative_counter
+def MergeSort(array, left, right, statistic_):
 
-    recursive_counter += 1        # 1 рекурсивний виклик
-    comparative_counter += 1      # 1 порівняння
+    statistic_[0] += 1            # 1 рекурсивний виклик
+    statistic_[3] += 1            # 1 порівняння
     if(left < right):
-        MergeSort(array, left, left + (right - left) // 2)
-        MergeSort(array, left + (right - left) // 2 + 1, right)
-        Merge(array, left, right)
+        MergeSort(array, left, left + (right - left) // 2, statistic_)
+        MergeSort(array, left + (right - left) // 2 + 1, right, statistic_)
+        Merge(array, left, right, statistic_)
 
 
 while True:
@@ -77,6 +73,8 @@ while True:
         assignment_counter = 0
         incremental_counter = 0
         comparative_counter = 0
+
+        statistic_of_counters = [recursive_counter, assignment_counter, incremental_counter, comparative_counter]
 
         int_menu = int(input("  Enter '1' if you want to fill the array yourself\n" +
                              "  Enter '2' if you want to fill the array with random values from A to B\n" +
@@ -98,13 +96,17 @@ while True:
         print("\nArray: ")
         print_array(arr)
     
-        MergeSort(arr, 0, n-1)
+        MergeSort(arr, 0, n-1, statistic_of_counters)
 
         print("\n\nSorted array: ")
         print_array(arr)
 
-        counter = recursive_counter + assignment_counter + incremental_counter + comparative_counter
-        print("\n\nOperations performed: " + str(counter) + "\n===========================\n")
+        counters = 0
+        for i in range (len(statistic_of_counters)):
+            counters += statistic_of_counters[i]
+        
+        print("\n\nOperations performed: " + str(counters) + '\n' + '='*30 + '\n')
+
     except ValueError: 
         print("\nValue should be INT\n")
         continue
