@@ -1,15 +1,19 @@
 import random
 
-def input_array(arr, n):
-    print("Input " + str(n) + " values: ")
-    for i in range(n):
-        arr[i] = int(input())
+def input_array(arr):
+    while True:
+        try:
+            print("Input " + str(len(arr)) + " values: ")
+            for i in range(len(arr)):
+                arr[i] = int(input("Arr[" + str(i) + "] = "))
+            break
+        except:
+            print("  ERROR: Values must be INT. Please try again\n")
+            continue
         
 
-def input_random_from_A_to_B(arr, n):
-    A = int(input(" Input A: "))
-    B = int(input(" Input B: "))
-    for i in range(n):
+def input_random_from_A_to_B(arr, A, B):
+    for i in range(len(arr)):
         arr[i] = random.randint(A,B)
 
 
@@ -18,11 +22,19 @@ def print_array(arr):
         print(arr[i], end=' ')
 
 
-def Merge(array, begin, end, statistic_):
+def add_operations(dictionaryCounters, assignment, incremental, comparative):
+    dictionaryCounters['assignment_counters'] += assignment
+    dictionaryCounters['incremental_counters'] += incremental
+    dictionaryCounters['comparative_counters'] += comparative
+
+
+def Merge(array, begin, end, dictionaryCounters):
+    dictionaryCounters['recursive_counters'] += 1
+    
     mid = begin + (end - begin) // 2
     i = begin; j = mid + 1; temp_arr = []; 
 
-    statistic_[3] += 2            # 2 порівняння
+    dictionaryCounters['comparative_counters'] += 2
     while(i <= mid and j <= end): 
         if(array[i] <= array[j]):
             temp_arr.append(array[i])
@@ -30,83 +42,87 @@ def Merge(array, begin, end, statistic_):
         else: 
             temp_arr.append(array[j])
             j+=1
-        statistic_[1] += 1        # 1 присвоєння 
-        statistic_[2] += 1        # 1 інкремент
-        statistic_[3] += 3        # 3 порівняння
+        add_operations(dictionaryCounters, 1, 1, 3)
 
-    statistic_[3] += 1            # 1 порівняння
+    dictionaryCounters['comparative_counters'] += 1
     while(i<=mid):
         temp_arr.append(array[i])
         i+=1
-        statistic_[1] += 1        # 1 присвоєння 
-        statistic_[2] += 1        # 1 інкремент
-        statistic_[3] += 1        # 1 порівняння
+        add_operations(dictionaryCounters, 1, 1, 1)
 
-    statistic_[3] += 1            # 1 порівняння
+    dictionaryCounters['comparative_counters'] += 1
     while(j<=end):
         temp_arr.append(array[j])
         j+=1
-        statistic_[1] += 1        # 1 присвоєння 
-        statistic_[2] += 1        # 1 інкремент
-        statistic_[3] += 1        # 1 порівняння
+        add_operations(dictionaryCounters, 1, 1, 1)
 
     for m in range(len(temp_arr)):
         array[begin+m] = temp_arr[m]
-        statistic_[1] += 1        # 1 присвоєння 
-        statistic_[2] += 1        # 1 інкремент
-        statistic_[3] += 1        # 1 порівняння
+        add_operations(dictionaryCounters, 1, 1, 1)
 
 
-def MergeSort(array, left, right, statistic_):
-
-    statistic_[0] += 1            # 1 рекурсивний виклик
-    statistic_[3] += 1            # 1 порівняння
+def MergeSort(array, left, right, dictionaryCounters):
+    dictionaryCounters['recursive_counters'] += 1
+    dictionaryCounters['comparative_counters'] += 1
     if(left < right):
-        MergeSort(array, left, left + (right - left) // 2, statistic_)
-        MergeSort(array, left + (right - left) // 2 + 1, right, statistic_)
-        Merge(array, left, right, statistic_)
+        MergeSort(array, left, left + (right - left) // 2, dictionaryCounters)
+        MergeSort(array, left + (right - left) // 2 + 1, right, dictionaryCounters)
+        Merge(array, left, right, dictionaryCounters)
 
 
-while True:
-    try:
-        recursive_counter = 0
-        assignment_counter = 0
-        incremental_counter = 0
-        comparative_counter = 0
+def menu():
+    while True:
+        dictionaryCounters = dict.fromkeys(['recursive_counters', 'assignment_counters', 'incremental_counters', 'comparative_counters'], 0)
 
-        statistic_of_counters = [recursive_counter, assignment_counter, incremental_counter, comparative_counter]
+        str_menu = input("  Enter 'random' if you want to fill the array with random values from A to B\n" +
+                         "  Enter 'fill' if you want to fill the array yourself\n" +
+                         "  Enter 'exit' if you want to exit\n")
 
-        int_menu = int(input("  Enter '1' if you want to fill the array yourself\n" +
-                             "  Enter '2' if you want to fill the array with random values from A to B\n" +
-                             "  Enter '3' if you want to exit\n"))
-
-        if int_menu == 3: break
-        elif int_menu < 1 or int_menu > 3:
+        if str_menu == "exit": 
+            break
+        elif str_menu != "fill" and str_menu != "random":
             print("\nPlease try again\n")
             continue
         else:
             n = 0
-            while(n <= 0): 
-                n = int(input("\nInput the size of the array (should be > 0) "))
-                continue
+            while(n <= 0):
+                try:
+                    n = int(input("\nInput the size of the array (must be '>' 0) "))
+                except:
+                    print("  ERROR: N must be INT. Please try again")
+                    continue
             arr = [0 for i in range(n)]
-            if int_menu == 1: input_array(arr, n)
-            else: input_random_from_A_to_B(arr, n)
+            if str_menu == "fill": 
+                input_array(arr)
+            else:
+                while True:
+                    try:
+                        A = int(input(" Input A: "))
+                        B = int(input(" Input B: "))
+                        if A > B:
+                            A=A+B
+                            B=A-B
+                            A=A-B
+                        input_random_from_A_to_B(arr, A, B)
+                        break
+                    except ValueError:
+                        print("  ERROR: A and B must be INT. Please try again")
+                        continue
 
         print("\nArray: ")
         print_array(arr)
-    
-        MergeSort(arr, 0, n-1, statistic_of_counters)
+
+        MergeSort(arr, 0, n-1, dictionaryCounters)
 
         print("\n\nSorted array: ")
         print_array(arr)
 
+        print("\n\n" + str(dictionaryCounters))
         counters = 0
-        for i in range (len(statistic_of_counters)):
-            counters += statistic_of_counters[i]
-        
-        print("\n\nOperations performed: " + str(counters) + '\n' + '='*30 + '\n')
+        for key in dictionaryCounters:
+            counters += dictionaryCounters[key]
 
-    except ValueError: 
-        print("\nValue should be INT\n")
-        continue
+        print("\nOperations performed: " + str(counters) + '\n' + '='*30 + '\n')
+
+
+menu()
