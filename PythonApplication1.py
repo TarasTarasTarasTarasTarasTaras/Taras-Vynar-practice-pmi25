@@ -1,43 +1,70 @@
 from LinkedList import LinkedList
+from MyClassError import MyClassError
 
 
-def menu() -> str:
-    str_menu = input("  Enter 'random' if you want to fill the LinkedList with random values from A to B\n" +
-                     "  Enter 'fill' if you want to fill the LinkedList yourself\n" +
-                     "  Enter 'exit' if you want to exit\n")
-    return str_menu
+def menu():
+    while True:
+        try:
+            action = int(input("===============================================\n" +
+                               "1.  Print LinkedList\n" +
+                               "2.  Enter items from the keyboard\n" +
+                               "3.  Add random elements in the interval [A-B]\n" + 
+                               "4.  Add an item by index\n" +
+                               "5.  Delete the item by index\n" +
+                               "6.  Сyclically move the list by K positions\n" + 
+                               "7.  Exit\n" + 
+                               "===============================================\n"))
+            break
+        except ValueError:
+            print("Must be INT")
+            continue
+    return action
     
 
-def main():
-    while True:
-        linkedList = LinkedList()
-        number = 10; positions = 3; A = 5; B = 25;
-        action = menu()
-        if action == "exit":
-            break
-        elif action != "random" and action != "fill":
-            print("\nPlease try again")
-            continue
-        else:
-            if action == "fill":
-                if linkedList.enter_from_the_keyboard(number) == False:       # якщо була помилка
-                    continue
-            elif action == "random":
-                if linkedList.fill_the_list_randomly(number, A, B) == False:  # якщо була помилка
-                    continue
-               
-        print("\n" + str(linkedList))
-        if linkedList.cyclic_shift_by_K_positions(positions) == False:        # якщо була помилка
-            continue
+def enter_items_from_keyboard(linkedList):
+    n = int(input("How many items do you want to add? "))
+    linkedList.enter_from_the_keyboard(n)
 
-        print("\n Cyclically swifted LinkedList by " + str(positions) + " positions:")
-        print(str(linkedList) + "\n")
-         
-        # main повинен був бути не більше 10 рядків, але розтягнув для читабельності.
+
+def add_random_elements(linkedList):
+    n = int(input("How many items do you want to add? "))
+    A = int(input("Enter A: "))
+    B = int(input("Enter B: "))
+    linkedList.fill_the_list_randomly(n, A, B)
+
+
+def add_an_item_by_index(linkedList):
+    item = input("Enter item: ")
+    index = int(input("Enter index: "))
+    linkedList.insert(index, item)
+
+
+def delete_the_item_by_index(linkedList):
+    index = int(input("Enter index: "))
+    linkedList.del_elem_by_index(index)
+
+
+def cyclically_move_by_K_positions(linkedList):
+    K = int(input("How many items do you want to move the list to?"))
+    linkedList.cyclic_shift_by_K_positions(K)
+
+
+def main():
+    linkedList = LinkedList()
+    while True:
+        action = menu()
+        try:
+            if   action == 1: print(linkedList)
+            elif action == 2: enter_items_from_keyboard(linkedList)
+            elif action == 3: add_random_elements(linkedList)
+            elif action == 4: add_an_item_by_index(linkedList)
+            elif action == 5: delete_the_item_by_index(linkedList)
+            elif action == 6: cyclically_move_by_K_positions(linkedList)
+            elif action == 7: break
+            else: print("Please try again") 
+        except (MyClassError, ValueError) as message:
+            print(str(message))
+            continue
 
 
 main()
-
-
-
-
