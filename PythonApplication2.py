@@ -1,17 +1,11 @@
 import random
 
 def input_array(arr):
-    while True:
-        try:
-            print("Input " + str(len(arr)) + " values: ")
-            for i in range(len(arr)):
-                arr[i] = int(input("Arr[" + str(i) + "] = "))
-            break
-        except:
-            print("  ERROR: Values must be INT. Please try again\n")
-            continue
-        
+    print("Input " + str(len(arr)) + " values: ")
+    for i in range(len(arr)):
+        arr[i] = enter_validated_number("Arr[" + str(i) + "] = ", "array element")
 
+        
 def input_random_from_A_to_B(arr, A, B):
     for i in range(len(arr)):
         arr[i] = random.randint(A,B)
@@ -70,6 +64,18 @@ def MergeSort(array, left, right, dictionaryCounters):
         Merge(array, left, right, dictionaryCounters)
 
 
+def enter_validated_number(string, key):
+    try:
+        number = int(input(string))
+        if key == "size" and number < 1:
+            raise SyntaxError
+        return number
+    except ValueError:
+        raise ValueError("  ERROR: " + key + " must be INT\n")
+    except SyntaxError:
+        raise ValueError("  ERROR: size must be greater than 0\n")
+
+
 def menu():
     while True:
         dictionaryCounters = dict.fromkeys(['recursive_counters', 'assignment_counters', 'incremental_counters', 'comparative_counters'], 0)
@@ -84,30 +90,23 @@ def menu():
             print("\nPlease try again\n")
             continue
         else:
-            n = 0
-            while(n <= 0):
-                try:
-                    n = int(input("\nInput the size of the array (must be '>' 0) "))
-                except:
-                    print("  ERROR: N must be INT. Please try again")
+            try:
+                n = enter_validated_number("Enter size: ", "size")
+                arr = [0 for i in range(n)]
+                if str_menu == "fill": 
+                    input_array(arr)
+                else:
+                   A = enter_validated_number("Enter A: ", "board")
+                   B = enter_validated_number("Enter B: ", "board")
+                   if A > B:
+                       A=A+B
+                       B=A-B
+                       A=A-B
+                   input_random_from_A_to_B(arr, A, B)
+            except ValueError as message:
+                    print(str(message))
                     continue
-            arr = [0 for i in range(n)]
-            if str_menu == "fill": 
-                input_array(arr)
-            else:
-                while True:
-                    try:
-                        A = int(input(" Input A: "))
-                        B = int(input(" Input B: "))
-                        if A > B:
-                            A=A+B
-                            B=A-B
-                            A=A-B
-                        input_random_from_A_to_B(arr, A, B)
-                        break
-                    except ValueError:
-                        print("  ERROR: A and B must be INT. Please try again")
-                        continue
+                
 
         print("\nArray: ")
         print_array(arr)
