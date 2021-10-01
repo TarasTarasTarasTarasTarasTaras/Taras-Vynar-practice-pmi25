@@ -21,6 +21,10 @@ def menu():
     return action
     
 
+def print_linkedList(linkedList):
+    print(linkedList)
+
+
 def enter_items_from_keyboard(linkedList):
     n = int(input("How many items do you want to add? "))
     linkedList.enter_from_the_keyboard(n)
@@ -45,26 +49,22 @@ def delete_the_item_by_index(linkedList):
 
 
 def cyclically_move_by_K_positions(linkedList):
-    K = int(input("How many items do you want to move the list to?"))
+    K = int(input("How many items do you want to move the list to? "))
     linkedList.cyclic_shift_by_K_positions(K)
 
 
 def main():
     linkedList = LinkedList()
+    
+    dictionary_of_actions = {1 : print_linkedList, 2 : enter_items_from_keyboard, 3 : add_random_elements,
+                             4 : add_an_item_by_index, 5 : delete_the_item_by_index, 6 : cyclically_move_by_K_positions, 7 : exit}
+
     while True:
         action = menu()
         try:
-            if   action == 1: print(linkedList)
-            elif action == 2: enter_items_from_keyboard(linkedList)
-            elif action == 3: add_random_elements(linkedList)
-            elif action == 4: add_an_item_by_index(linkedList)
-            elif action == 5: delete_the_item_by_index(linkedList)
-            elif action == 6: cyclically_move_by_K_positions(linkedList)
-            elif action == 7: break
-            else: print("Please try again") 
-        except (MyClassError, ValueError) as message:
+            dictionary_of_actions[action](linkedList)
+        except (MyClassError, ValueError, KeyError) as message:
             print(str(message))
-            continue
 
 
 main()
