@@ -2,7 +2,9 @@ from MyClassError import MyClassError
 
 class Validation:
     def validation_is_int(self, value):
-        if type(value) is not int:
+        try:
+            return int(value)
+        except:
             raise MyClassError("  ERROR: Value must be INT\n")
 
 
