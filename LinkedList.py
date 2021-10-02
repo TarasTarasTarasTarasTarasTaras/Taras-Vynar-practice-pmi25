@@ -230,11 +230,7 @@ class LinkedList:
     def __len__(self):
         return self.__int_size
 
-
-    def __getitem__(self, index):
-        get_elem_by_index(index)
-
-
+    
     def __setitem__(self, index, value):
         try:
             self.__validation.validation_is_int(index)
