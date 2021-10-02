@@ -58,14 +58,16 @@ def main():
     linkedList = LinkedList()
     
     dictionary_of_actions = {1 : print_linkedList, 2 : enter_items_from_keyboard, 3 : add_random_elements,
-                             4 : add_an_item_by_index, 5 : delete_the_item_by_index, 6 : cyclically_move_by_K_positions, 7 : exit}
+                             4 : add_an_item_by_index, 5 : delete_the_item_by_index, 6 : cyclically_move_by_K_positions}
 
     while True:
         action = menu()
-        try:
-            dictionary_of_actions[action](linkedList)
-        except (MyClassError, ValueError, KeyError) as message:
-            print(str(message))
+        if action == 7: break
+        else:
+            try:
+                dictionary_of_actions[action](linkedList)
+            except (MyClassError, ValueError, KeyError) as message:
+                print(str(message))
 
 
 main()
