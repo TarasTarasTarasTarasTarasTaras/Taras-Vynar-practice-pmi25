@@ -14,10 +14,10 @@ class LinkedList:
 
     def enter_from_the_keyboard(self, n:int):
         try:
-            self.__validation.validation_is_int(n)
+            n = self.__validation.validation_is_int(n)
             self.__validation.number_validation_by_added(n)
         except MyClassError as message:
-            print(message)
+            print(str(message))
             return False
 
         for i in range(n):
@@ -27,7 +27,10 @@ class LinkedList:
 
     def fill_the_list_randomly(self, n:int, A:int, B:int):
         try:
-            self.__validation.validation_is_int(n)
+            n = self.__validation.validation_is_int(n)
+            A = self.__validation.validation_is_int(A)
+            B = self.__validation.validation_is_int(B)
+
             self.__validation.number_validation_by_added(n)
         except MyClassError as message:
             print(message)
@@ -55,7 +58,7 @@ class LinkedList:
 
     def insert(self, index:int, value):
         try:
-            self.__validation.validation_is_int(index)
+            index = self.__validation.validation_is_int(index)
             self.__validation.index_validation_by_added(index, self.__int_size)
         except MyClassError as message:
             print(message)
@@ -105,7 +108,7 @@ class LinkedList:
 
     def del_elem_by_index(self, index:int):
         try:
-            self.__validation.validation_is_int(index)
+            index = self.__validation.validation_is_int(index)
             self.__validation.index_validation(index, self.__int_size)
         except MyClassError as message:
             print(message)
@@ -140,7 +143,7 @@ class LinkedList:
 
     def cyclic_shift_by_K_positions(self, k:int):
         try:
-            self.__validation.validation_is_int(k)
+            k = self.__validation.validation_is_int(k)
             self.__validation.validation_when_cyclic_shift(k, self.__int_size)
         except MyClassError as message:
             print(message)
@@ -177,7 +180,7 @@ class LinkedList:
 
     def get_elem_by_index(self, index:int):
         try:
-            self.__validation.validation_is_int(index)
+            index = self.__validation.validation_is_int(index)
             self.__validation.index_validation(index, self.__int_size)
         except MyClassError as message:
             print(message)
@@ -224,6 +227,14 @@ class LinkedList:
         return self.get_elem_by_index(index)
 
 
+    def __len__(self):
+        return self.__int_size
+
+
+    def __getitem__(self, index):
+        get_elem_by_index(index)
+
+
     def __setitem__(self, index, value):
         try:
             self.__validation.validation_is_int(index)
@@ -245,5 +256,3 @@ class LinkedList:
                 curr_index -= 1
                 curr_elem = curr_elem.prev
         curr_elem.value = value
-
-
