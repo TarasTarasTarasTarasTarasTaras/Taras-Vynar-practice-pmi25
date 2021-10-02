@@ -14,11 +14,12 @@ def menu():
                                "6.  Сyclically move the list by K positions\n" + 
                                "7.  Exit\n" + 
                                "===============================================\n"))
-            break
+            if action < 1 or action > 7:
+                print("Please try again")
+            else: return action
         except ValueError:
             print("Must be INT")
             continue
-    return action
     
 
 def print_linkedList(linkedList):
@@ -26,30 +27,30 @@ def print_linkedList(linkedList):
 
 
 def enter_items_from_keyboard(linkedList):
-    n = int(input("How many items do you want to add? "))
+    n = input("How many items do you want to add? ")
     linkedList.enter_from_the_keyboard(n)
 
 
 def add_random_elements(linkedList):
-    n = int(input("How many items do you want to add? "))
-    A = int(input("Enter A: "))
-    B = int(input("Enter B: "))
+    n = input("How many items do you want to add? ")
+    A = input("Enter A: ")
+    B = input("Enter B: ")
     linkedList.fill_the_list_randomly(n, A, B)
 
 
 def add_an_item_by_index(linkedList):
     item = input("Enter item: ")
-    index = int(input("Enter index: "))
+    index = input("Enter index: ")
     linkedList.insert(index, item)
 
 
 def delete_the_item_by_index(linkedList):
-    index = int(input("Enter index: "))
+    index = input("Enter index: ")
     linkedList.del_elem_by_index(index)
 
 
 def cyclically_move_by_K_positions(linkedList):
-    K = int(input("How many items do you want to move the list to? "))
+    K = input("How many items do you want to move the list to? ")
     linkedList.cyclic_shift_by_K_positions(K)
 
 
