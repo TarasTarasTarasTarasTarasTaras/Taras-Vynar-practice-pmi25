@@ -25,23 +25,8 @@ class LinkedList:
             self.append(value)
 
 
-    def fill_the_list_randomly(self, n:int, A:int, B:int):
-        try:
-            n = self.__validation.validation_is_int(n)
-            A = self.__validation.validation_is_int(A)
-            B = self.__validation.validation_is_int(B)
-
-            self.__validation.number_validation_by_added(n)
-        except MyClassError as message:
-            print(message)
-            return False
-
-        if A > B:
-            A=A+B
-            B=A-B
-            A=A-B
-        for i in range(n):
-            value = random.randint(A, B)
+    def fill_randomly(self, func):
+        for value in func:
             self.append(value)
 
 
@@ -252,5 +237,3 @@ class LinkedList:
                 curr_index -= 1
                 curr_elem = curr_elem.prev
         curr_elem.value = value
-
-
