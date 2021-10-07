@@ -1,6 +1,5 @@
 import random
-import functools
 
-def generator(size, function = functools.partial(random.randint, 0, 10)): 
+def generator(size, *args, function = random.randint): 
     for i in range(size):
-        yield function()
+        yield function(*args)
