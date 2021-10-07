@@ -33,30 +33,8 @@ def print_linkedList(linkedList):
 
 
 def enter_items_from_keyboard(linkedList):
-    while True:
-        action = input("---------------------------------------\n"
-                       "   1. Enter values using the Iterator\n" +
-                       "   2. Enter values using the Generator\n" + 
-                       "   3. Go back\n" + 
-                       "---------------------------------------\n") 
-        if action == "3": return
-        elif action != "1" and action != "2":
-            print("Please try again")
-            continue
-        else:
-            n = validation.validation_is_int(input("How many items do you want to add? "))
-            if action == "1":
-                index = linkedList.get_size()
-                iter = IteratorLL(n, lambda : input("LinkedList[%s] = " % (index)))
-                for it in iter:
-                    linkedList.append(it)
-                    index += 1
-            elif action == "2":
-                index = linkedList.get_size()
-                for value in generator(n, lambda : input("LinkedList[%s] = " % (index))):
-                    linkedList.append(value)
-                    index += 1
-
+    n = input("How many items do you want to add? ")
+    linkedList.enter_from_the_keyboard(n)
 
 
 def add_random_elements(linkedList):
@@ -78,13 +56,11 @@ def add_random_elements(linkedList):
                     A=A+B
                     B=A-B
                     A=A-B
-            if action == "1":
-                iter = IteratorLL(n, lambda : random.randint(A, B))
-                for it in iter:
-                    linkedList.append(it)
-            elif action == "2":
-                for value in generator(n, lambda : random.randint(A, B)):
-                    linkedList.append(value)
+            if action == "1": func = IteratorLL(n, A, B)
+            else:             func = generator(n, A, B)
+
+            linkedList.fill_randomly(func)
+
 
 
 def add_an_item_by_index(linkedList):
@@ -117,7 +93,6 @@ def main():
                 dictionary_of_actions[action](linkedList)
             except (MyClassError, ValueError, KeyError) as message:
                 print(str(message))
-
 
 
 
