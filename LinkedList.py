@@ -37,7 +37,7 @@ class LinkedList:
             elif choice != '3':
                 print("Please try again")
                 continue
-            else: break
+            break
 
 
     def enter_from_the_keyboard(self, n:int):
