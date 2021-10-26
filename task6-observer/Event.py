@@ -2,8 +2,8 @@ from Observer import Observer
 
 class Event:
     @staticmethod
-    def update(key, old_list, list_of_values, pos_or_range, new_list):
-        for listener in Observer.listeners:
+    def update(key, observer, old_list, list_of_values, pos_or_range, new_list):
+        for listener in observer.get_listeners():
             if key == listener:
-                Observer.listeners[listener](old_list, list_of_values, pos_or_range, new_list)
+                observer.get_listeners()[listener](old_list, list_of_values, pos_or_range, new_list)
                 return
