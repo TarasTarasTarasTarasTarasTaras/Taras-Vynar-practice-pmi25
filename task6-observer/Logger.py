@@ -1,4 +1,5 @@
 from Validation import Validation
+from datetime import *
 
 class Logger:
     def __init__(self, filename):
@@ -13,6 +14,7 @@ class Logger:
             raise ValueError("File logger not found")
         
         file.write("------------Add operation------------\n" +
+                   "Date:             " + str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')) + '\n' +
                    "Old list:         " + str(old_list) + '\n' +
                    "Added items:      " + str(list_of_values) + '\n' +
                    "Position/Range:   " + str(pos) + '\n' +
@@ -27,15 +29,12 @@ class Logger:
             file = open(filename, mode="a")
         except FileNotFoundError:
             raise ValueError("File logger not found")
-
+        
         file.write("-----------Delete operation-----------\n" +
+                   "Date:             " + str(datetime.now().strftime('%Y-%m-%d %H:%M:%S')) + '\n' +
                    "Old list:         " + str(old_list) + '\n' +
                    "Deleted items:    " + str(list_of_values) + '\n' +
                    "Position/Range:   " + str(pos_or_range) + '\n' +
                    "New list(result): " + str(new_list) + '\n' +
                    "--------------------------------------\n\n")
-
-
-
-
 
