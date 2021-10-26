@@ -1,4 +1,5 @@
 ------------Add operation------------
+Date:             2021-10-27 01:24:31
 Old list:         [ ]
 Added items:      ['1', '2', '3', '4', '5', '6', '7', '8', '9']
 Position/Range:   0
@@ -6,30 +7,42 @@ New list(result): [ 1 2 3 4 5 6 7 8 9 ]
 -------------------------------------
 
 -----------Delete operation-----------
+Date:             2021-10-27 01:24:41
 Old list:         [ 1 2 3 4 5 6 7 8 9 ]
-Deleted items:    6
-Position/Range:   5
-New list(result): [ 1 2 3 4 5 7 8 9 ]
+Deleted items:    5
+Position/Range:   4
+New list(result): [ 1 2 3 4 6 7 8 9 ]
 --------------------------------------
 
 -----------Delete operation-----------
-Old list:         [ 1 2 3 4 5 7 8 9 ]
-Deleted items:    ['1', '2', '3', '4', '5', '7', '8']
-Position/Range:   [0, 7]
-New list(result): [ 9 ]
+Date:             2021-10-27 01:24:48
+Old list:         [ 1 2 3 4 6 7 8 9 ]
+Deleted items:    ['1', '2', '3']
+Position/Range:   [0, 3]
+New list(result): [ 4 6 7 8 9 ]
 --------------------------------------
 
 ------------Add operation------------
-Old list:         [ 9 ]
-Added items:      4
+Date:             2021-10-27 01:25:06
+Old list:         [ 4 6 7 8 9 ]
+Added items:      10
 Position/Range:   0
-New list(result): [ 4 9 ]
+New list(result): [ 10 4 6 7 8 9 ]
 -------------------------------------
 
 ------------Add operation------------
-Old list:         [ 4 9 ]
-Added items:      [9, 0, 0, 3, 3]
+Date:             2021-10-27 01:25:17
+Old list:         [ 10 4 6 7 8 9 ]
+Added items:      ['1', '2', '3']
 Position/Range:   1
-New list(result): [ 4 9 0 0 3 3 9 ]
+New list(result): [ 10 1 2 3 4 6 7 8 9 ]
+-------------------------------------
+
+------------Add operation------------
+Date:             2021-10-27 01:25:30
+Old list:         [ 10 1 2 3 4 6 7 8 9 ]
+Added items:      [8, 8, 7, 7, 5]
+Position/Range:   6
+New list(result): [ 10 1 2 3 4 6 8 8 7 7 5 7 8 9 ]
 -------------------------------------
 
