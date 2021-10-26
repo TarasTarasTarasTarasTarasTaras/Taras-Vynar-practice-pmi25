@@ -45,7 +45,7 @@ def choose_strategy_read_from_file(linkedList):
     print("Strategy 'Read from file' selected successfully")
 
 
-def generate_data(linkedList):
+def generate_data(linkedList, observer):
     old_list = linkedList.get_copy()
 
     if linkedList.get_strategy() == "fill by iterator":
@@ -68,18 +68,18 @@ def generate_data(linkedList):
         added_elems = linkedList.execute_strategy(filename, index)
         print("  <<< Data from the file was read successfully >>>")
         
-    Event.update("add", old_list, added_elems, index, linkedList.get_copy())
+    Event.update("add", observer, old_list, added_elems, index, linkedList.get_copy())
 
 
-def add_an_item_by_index(linkedList):
+def add_an_item_by_index(linkedList, observer):
     old_list = linkedList.get_copy()
     item = input("Enter item: ")
     index = (0 if linkedList.get_size() == 0 else validation.validation_is_int(input("Enter the insert position:  ")))
     linkedList.insert(index, item)
-    Event.update("add", old_list, item, index, linkedList.get_copy())
+    Event.update("add", observer, old_list, item, index, linkedList.get_copy())
 
 
-def add_multiple_items_by_index(linkedList):
+def add_multiple_items_by_index(linkedList, observer):
     old_list = linkedList.get_copy()
     added_elems = []
     n = validation.validation_is_int(input("How many items do you want to add? "))
@@ -90,22 +90,22 @@ def add_multiple_items_by_index(linkedList):
         linkedList.insert(index, item)
         index+=1
 
-    Event.update("add", old_list, added_elems, index-n, linkedList.get_copy())
+    Event.update("add", observer, old_list, added_elems, index-n, linkedList.get_copy())
 
 
-def delete_the_item_by_index(linkedList):
+def delete_the_item_by_index(linkedList, observer):
     old_list = linkedList.get_copy()
     index = input("Enter index: ")
     del_elem = linkedList.del_elem_by_index(index)
-    Event.update("remove", old_list, del_elem, index, linkedList.get_copy())
+    Event.update("remove", observer, old_list, del_elem, index, linkedList.get_copy())
 
 
-def delete_items_within_start_end(linkedList):
+def delete_items_within_start_end(linkedList, observer):
     old_list = linkedList.get_copy()
     start = int(input("Enter the start index: "))
     end = int(input("Enter the end index: "))
     del_elems = linkedList.del_elem_from_start_to_end(start, end)
-    Event.update("remove", old_list, del_elems, [start, end], linkedList.get_copy())
+    Event.update("remove", observer, old_list, del_elems, [start, end], linkedList.get_copy())
 
 
 def cyclically_move_by_K_positions(linkedList):
@@ -120,8 +120,9 @@ def print_linkedList(linkedList):
 def main():
     linkedList = LinkedList()
     logger = Logger("logs.txt")
-    Observer.attach("add", logger.add_operation)
-    Observer.attach("remove", logger.remove_operation)
+    observer = Observer()
+    observer.attach("add", logger.add_operation)
+    observer.attach("remove", logger.remove_operation)
     
 
     dictionary_of_actions = {1 : choose_strategy_fill_by_iterator, 2 : choose_strategy_read_from_file, 3 : generate_data,
@@ -134,7 +135,8 @@ def main():
         if action == 0: break
         else:
             try:
-                dictionary_of_actions[action](linkedList)
+                if 2 < action < 8: dictionary_of_actions[action](linkedList, observer)
+                else:              dictionary_of_actions[action](linkedList)
             except (MyClassError, ValueError, KeyError, FileNotFoundError) as message:
                 print(str(message))
 
