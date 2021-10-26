@@ -1,10 +1,12 @@
 class Observer:
-    listeners = dict()
+    def __init__(self):
+        self.__listeners = dict()
     
-    @staticmethod
-    def attach(key, function):
-        Observer.listeners[key] = function
+    def attach(self, key, function):
+        self.__listeners[key] = function
 
-    @staticmethod
-    def detach(key):
-        Observer.listeners.pop(key)
+    def detach(self, key):
+        self.__listeners.pop(key)
+
+    def get_listeners(self):
+        return self.__listeners
