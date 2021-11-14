@@ -1,4 +1,6 @@
-from rest_framework.views import APIView
+#from rest_framework.views import APIView
+from rest_framework.generics import ListAPIView
+
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Payment
@@ -6,10 +8,17 @@ from .serializer import PaymentSerializer
 
 from drf_yasg.utils import swagger_auto_schema
 from .documentations import DOCS
+from django.utils.decorators import method_decorator
 
 # Create your views here.
 
-class PaymentAPI(APIView):
+class PaymentAPI(ListAPIView):
+    queryset = Payment.objects.all()
+    serializer_class = PaymentSerializer
+    filter_backends = [filters.OrderingFilter, filters.SearchFilter]
+    search_fields = ('id', 'payer_email', 'amount', 'currency', 'request_date', 'due_to_date', 'transactionID')
+    
+    '''
     @swagger_auto_schema(
         operation_description = DOCS.get['operation_name'],
         responses = DOCS.get['responses']
@@ -18,7 +27,7 @@ class PaymentAPI(APIView):
         payments = Payment.objects.all()
         serializerPayment = PaymentSerializer(payments, many=True)
         return Response(serializerPayment.data)
-    
+    '''
     
     @swagger_auto_schema(
         request_body = DOCS.post['body'],
@@ -38,7 +47,7 @@ class PaymentAPI(APIView):
 
 
 
-class PaymentAPIwithID(APIView):
+class PaymentAPIwithID(ListAPIView):
     def get_object_or_response(self, id):
         try:
             return Payment.objects.get(pk = id)
