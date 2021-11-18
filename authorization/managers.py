@@ -23,7 +23,7 @@ class UserManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, _first_name, _last_name, email, password):
+    def create_superuser(self, email, password):
         """ Создает и возввращет пользователя с привилегиями суперадмина. """
         if _first_name is None:
             raise TypeError('Users must have a first name')
@@ -37,7 +37,7 @@ class UserManager(BaseUserManager):
         if password is None:
             raise TypeError('Users must have a password.')
 
-        user = self.model(first_name = _first_name, last_name = _last_name, email=self.normalize_email(email))
+        user = self.model(email=self.normalize_email(email), **names)
         user.is_superuser = True
         user.is_staff = True
         user.save()
