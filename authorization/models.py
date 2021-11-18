@@ -1,6 +1,7 @@
 from django.db import models
 
 import jwt
+from jwt import PyJWT
 
 from datetime import datetime, timedelta
 
@@ -11,6 +12,7 @@ from django.contrib.auth.models import (
 
 from django.db import models
 from .managers import UserManager
+from rest_framework_simplejwt.tokens import RefreshToken
 
 # Create your models here.
 
@@ -24,21 +26,14 @@ class User(AbstractBaseUser, PermissionsMixin):
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name', 'password']
     objects = UserManager()
-
-    @property
-    def token(self):
-        return self._generate_jwt_token()
-
-    def _generate_jwt_token(self):
-        """
-        Генерирует веб-токен JSON, в котором хранится идентификатор этого
-        пользователя, срок действия токена составляет 1 день от создания
-        """
-        dt = datetime.now() + timedelta(days=1)
-
-        token = jwt.encode({
-            'id': self.pk,
-            'exp': int(dt.strftime('%s'))
-        }, settings.SECRET_KEY, algorithm='HS256')
-
-        return token.decode('utf-8')
+    
+    
+    def tokens(self):
+        refresh = RefreshToken.for_user(self)
+        #return str(refresh.access_token)
+        
+        return {
+            'refresh': str(refresh),
+            'access': str(refresh.access_token)
+        }
+        
